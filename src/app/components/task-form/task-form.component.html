@@ -1,0 +1,35 @@
+<section class="form-container">
+    <div *ngIf="add == true; then trueBlock else falseBlock"></div>
+    <ng-template #trueBlock>
+        <input [(ngModel)]="title" type="text" pInputText placeholder="Task Name" pInputText class="p-inputtext-sm"
+            class="titulo" required />
+        <div class="button-line">
+            <p-selectButton [disabled]="true" [options]="status" [(ngModel)]="selectedStatus" optionLabel="name">
+            </p-selectButton>
+
+            <p-selectButton [options]="priority" [(ngModel)]="selectedPriority" optionLabel="name"></p-selectButton>
+        </div>
+        <textarea [(ngModel)]="description" placeholder="Task Description (Max 255 Characters)" maxlength="255"
+            name="description"></textarea>
+        <span>{{description.length}} /255</span>
+        <div class="">
+            <p-button label="Create" icon="pi pi-check" iconPos="right" type="submit" (click)="createTask()"></p-button>
+        </div>
+    </ng-template>
+    <ng-template #falseBlock>
+        <input [(ngModel)]="title2" type="text" pInputText placeholder="Task Name" pInputText class="p-inputtext-sm"
+            class="titulo" required />
+        <div class="button-line">
+            <p-selectButton [options]="status" [(ngModel)]="status2" optionLabel="name">
+            </p-selectButton>
+
+            <p-selectButton [options]="priority" [(ngModel)]="prio2" optionLabel="name"></p-selectButton>
+        </div>
+        <textarea [(ngModel)]="desc2" placeholder="Task Description (Max 255 Characters)" maxlength="255"
+            name="description"></textarea>
+        <span class="counter">{{desc2?.length}} /255</span>
+        <div class="">
+            <p-button label="Update" icon="pi pi-check" iconPos="right" type="submit" (click)="updateTask()"></p-button>
+        </div>
+    </ng-template>
+</section>

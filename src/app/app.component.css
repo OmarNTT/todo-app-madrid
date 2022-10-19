@@ -1,0 +1,17 @@
+.translucent{
+    opacity: 0.15;
+}
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.taskNumber{
+    position: absolute;
+    left: 10em;
+}
+.grueso{
+    width: 150px;
+    
+}

@@ -1,0 +1,96 @@
+<main [ngClass]="{'translucent' : popUp == true}">
+    <div #cont1 (drop)="drop($event,cont1, 'notstarted')" (dragover)="allowDrop($event)" class="task-container">
+        <h2> To-Do Tasks </h2>
+        <p-card draggable="true" (dragstart)="drag($event)" class="card" *ngFor="let todo of todoTask" [id]="todo.id">
+            <ng-template pTemplate="header">
+                <div class="card-header">
+                    <p class="card-header-text">{{todo.title}}
+                        <p-chip [class]="
+                         todo.priority == 1
+                          ? 'priority-1 mr-2'
+                          : todo.priority == 2
+                          ? 'priority-2 mr-2'
+                          : 'priority-3 mr-2'" styleClass="mr-2 custom-chip">
+                            {{todo.priority}}
+                        </p-chip>
+                    </p>
+                </div>
+            </ng-template>
+            {{todo.description}}
+            <ng-template pTemplate="footer">
+                <div class="card-footer">
+                    <button pButton type="button" class="p-button-raised p-button-rounded p-button-sm "
+                        icon="pi pi-pencil" (click)="showPopUp(todo)" styleClass="custom-button"></button>
+                    <p> {{todo.date}}</p>
+                    <button pButton type="button" class="p-button-raised p-button-rounded p-button-sm "
+                        icon="pi pi-trash" styleClass="trash-button" (click)="deleteTask(todo)"></button>
+                </div>
+            </ng-template>
+        </p-card>
+    </div>
+
+    <div #cont2 (drop)="drop($event,cont2, 'started')" (dragover)="allowDrop($event)" class="task-container">
+        <h2> Started Tasks</h2>
+        <p-card draggable="true" (dragstart)="drag($event)" class="card" *ngFor="let todo of startedTask"
+            [id]="todo.id">
+            <ng-template pTemplate="header">
+                <div class="card-header">
+                    <p class="card-header-text">{{todo.title}}
+                        <p-chip [class]="
+                         todo.priority == 1
+                          ? 'priority-1 mr-2'
+                          : todo.priority == 2
+                          ? 'priority-2 mr-2'
+                          : 'priority-3 mr-2'" styleClass="mr-2 custom-chip">
+                            {{todo.priority}}
+                        </p-chip>
+                </div>
+            </ng-template>
+            {{todo.description}}
+            <ng-template pTemplate="footer">
+                <div class="card-footer">
+                    <button pButton type="button" class="p-button-raised p-button-rounded p-button-sm "
+                        icon="pi pi-pencil" (click)="showPopUp(todo)" styleClass="custom-button"></button>
+                    <p> {{todo.date}}</p>
+                    <button pButton type="button" class="p-button-raised p-button-rounded p-button-sm "
+                        icon="pi pi-trash" styleClass="trash-button" (click)="deleteTask(todo)"></button>
+                </div>
+            </ng-template>
+        </p-card>
+    </div>
+
+    <div #cont3 (drop)="drop($event,cont3, 'finished')" (dragover)="allowDrop($event)" class="task-container">
+        <h2> Finished Tasks</h2>
+        <p-card draggable="true" (dragstart)="drag($event)" class="card" *ngFor="let todo of finishedTask"
+            [id]="todo.id">
+            <ng-template pTemplate="header">
+                <div class="card-header">
+                    <p class="card-header-text">{{todo.title}}
+                        <p-chip [class]="
+                         todo.priority == 1
+                          ? 'priority-1 mr-2'
+                          : todo.priority == 2
+                          ? 'priority-2 mr-2'
+                          : 'priority-3 mr-2'" styleClass="mr-2 custom-chip">
+                            {{todo.priority}}
+                        </p-chip>
+                </div>
+            </ng-template>
+            {{todo.description}}
+            <ng-template pTemplate="footer">
+                <div class="card-footer">
+                    <button pButton type="button" class="p-button-raised p-button-rounded p-button-sm "
+                        icon="pi pi-pencil" (click)="showPopUp(todo)" styleClass="custom-button"></button>
+                    <p> {{todo.date}}</p>
+                    <button pButton type="button" class="p-button-raised p-button-rounded p-button-sm "
+                        icon="pi pi-trash" styleClass="trash-button" (click)="deleteTask(todo)"></button>
+                </div>
+            </ng-template>
+        </p-card>
+    </div>
+
+
+</main>
+<p-dialog header="Update your Task" [(visible)]="popUp" styleClass="pop-up">
+    <app-task-form [add]="false" [id2]="selectedTask.id" [title2]="selectedTask.title" [desc2]="selectedTask.description" [status2]="selected" [prio2]="priority" ></app-task-form>
+</p-dialog>

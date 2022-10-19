@@ -1,0 +1,37 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.titulo {
+    width: 100%;
+}
+
+textarea {
+    all: initial;
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid rgba(187, 187, 187, 0.654);
+    font-family: inherit;
+
+    padding: 1rem 8px;
+    border-radius: 4px;
+}
+
+.button-line {
+    display: flex;
+    gap: 1em;
+    width: 100%;
+
+}
+.counter{
+    width: 99%;
+    text-align: right;
+    position: relative;
+    margin-top: -16px;
+
+
+}
