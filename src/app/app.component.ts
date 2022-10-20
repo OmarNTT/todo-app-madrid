@@ -13,7 +13,7 @@ export class AppComponent {
   allTasks: Task[] = [];
   popUp: boolean = false;
 
-  constructor(private taskService : TaskService){
+  constructor(public taskService : TaskService){
     taskService.getTask().subscribe(response => console.log(response))
   }
   test(){
@@ -25,7 +25,7 @@ export class AppComponent {
       let notStarted = this.allTasks.filter(task => task.status == 'notstarted').length;
       let started = this.allTasks.filter(task => task.status == 'started').length;
       let sum = notStarted + started;
-      this.taskNumber = sum.toString();
+      this.taskService.taskNumber = String(sum);
       console.log(this.taskNumber)
 
     })

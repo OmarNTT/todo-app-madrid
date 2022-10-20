@@ -8,19 +8,17 @@ import { Task } from '../../task'
   styleUrls: ['./task-container.component.css']
 })
 export class TaskContainerComponent implements OnInit {
-  @Output()
-
   popUp: boolean = false;
 
   allTasks: Task[] = [];
-  todoTask: Task[] = [];
-  startedTask: Task[] = [];
-  finishedTask: Task[] = [];
-  selectedTask: Task = {};
-  selected: any;
-  priority: any;
 
-  taskNumber: number = this.todoTask.length + this.startedTask.length
+  selectedTaskForm: any = {};
+
+  tasksByStatus = {
+    notstarted: [] as Task[],
+    started:    [] as Task[],
+    finished:   [] as Task[]
+  }
 
   constructor(private taskService: TaskService) {
 
@@ -30,40 +28,38 @@ export class TaskContainerComponent implements OnInit {
     this.getData();
   }
 
-  showPopUp(task: any) {
-
+  showPopUp(task: Task) {
     this.popUp = true;
-    this.selectedTask = task;
-    console.log(task.status)
-    if (task.status == 'notstarted') {
-      this.selected = { name: 'Not Started', code: 'notstarted' }
-    }
-    if (task.status == 'started') {
-      this.selected = { name: 'Started', code: 'started' }
-    }
-    if (task.status == 'finished') {
-      this.selected = { name: 'Finished', code: 'finished' }
-    }
-    if (task.priority == 1) {
-      this.priority = { name: 'Low', code: 1 }
-    }
-    if (task.priority == 2) {
-      this.priority = { name: 'Medium', code: 2 }
-    }
-    if (task.priority == 3) {
-      this.priority = { name: 'Urgent', code: 3 }
+
+    const allStatus = {
+      notstarted: { name: 'Not Started', code: 'notstarted' },
+      started:    { name: 'Started', code: 'started' },
+      finished:   { name: 'Finished', code: 'finished' }
     }
 
-
-    console.log(this.selectedTask)
-
+    const allPriorities = [
+      { name: 'Low', code: 1 },
+      { name: 'Medium', code: 2 },
+      { name: 'Urgent', code: 3 }
+    ]
+    
+    this.selectedTaskForm = {
+      id:         task.id,
+      title:      task.title,
+      description:task.description,
+      priority:   allPriorities[task.priority!-1],
+      status:   allStatus[task.status!]
+    };
   }
   getData() {
     this.taskService.getTask().subscribe(response => {
       this.allTasks = response;
-      this.todoTask = this.allTasks.filter(task => task.status == 'notstarted').sort((a: any, b: any) => b.priority - a.priority);
-      this.startedTask = this.allTasks.filter(task => task.status == 'started').sort((a: any, b: any) => b.priority - a.priority);
-      this.finishedTask = this.allTasks.filter(task => task.status == 'finished').sort((a: any, b: any) => b.priority - a.priority);
+      this.tasksByStatus = {
+        notstarted: this.allTasks.filter(task => task.status == 'notstarted').sort((a: any, b: any) => b.priority - a.priority),
+        started:    this.allTasks.filter(task => task.status == 'started').sort((a: any, b: any) => b.priority - a.priority),
+        finished:   this.allTasks.filter(task => task.status == 'finished').sort((a: any, b: any) => b.priority - a.priority),
+      }
+      this.updateRemainingTasks()
     })
   }
   allowDrop(ev: any) {
@@ -74,26 +70,59 @@ export class TaskContainerComponent implements OnInit {
     ev.dataTransfer.setData("data", ev.target.id);
     console.log("Drag started");
   }
-  drop(ev: any, el: any, status: any) {
-    console.log(status)
+
+  drop(ev: any, status: "notstarted" | "started" | "finished") {
     ev.preventDefault();
     let id = ev.dataTransfer.getData("data");
-    el.appendChild(document.getElementById(id));
-    const taskToUpdate = this.allTasks.find((task) => task.id === parseInt(id));
-    console.log(taskToUpdate)
+    console.log(ev)
+
+    const taskToUpdate:Task = this.allTasks.find((task) => task.id === parseInt(id)) as Task;
+
     this.taskService
       .updateTask({ ...taskToUpdate, status })
-      .subscribe((data: any) => {
-
+      .subscribe(() => {
+        this.moveTask(taskToUpdate, status)
       }
       );
 
   }
 
   deleteTask(task: any) {
-    this.taskService.deleteTask(task.id).subscribe((data: any) => this.getData());
-    alert('Deleted properly');
-    window.location.reload()
+    this.taskService.deleteTask(task.id).subscribe(() => {
+      this.deleteTaskFromList(task);
+    });
+  }
+
+  moveTask(task:Task, dest:"notstarted" | "started" | "finished"){
+    this.deleteTaskFromList(task)
+    const destList = this.tasksByStatus[dest];
+    task.status = dest;
+    destList.push(task);
+    destList.sort((a: any, b: any) => b.priority - a.priority)
+
+    this.updateRemainingTasks()
+  }
+
+  deleteTaskFromList(task:Task){
+    const orgList = this.tasksByStatus[task.status!];
+    const index = orgList.indexOf(task);
+    orgList.splice(index,1);
+
+    this.updateRemainingTasks()
+  }
+
+  filterByPrio(status:"notstarted" | "started" | "finished", prio:number){
+    const filteredList = this.allTasks.filter((task)=>(task.status==status && task.priority==prio))
+    this.tasksByStatus[status] = filteredList;
+  }
+
+  updateRemainingTasks(){
+    const numRemainingTasks = this.tasksByStatus.notstarted.length + this.tasksByStatus.started.length;
+    this.taskService.taskNumber = String(numRemainingTasks)
+  }
+
+  allTasksByStatus(status:"notstarted" | "started" | "finished"){
+    this.tasksByStatus[status] = this.allTasks.filter(task => task.status == status).sort((a: any, b: any) => b.priority - a.priority);
   }
 
 }

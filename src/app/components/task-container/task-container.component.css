@@ -5,9 +5,11 @@ main {
     gap: 1.5em;
     padding: 1.5em;
 }
-.translucent{
+
+.translucent {
     opacity: 0.15;
 }
+
 .task-container {
 
     flex: 1;
@@ -22,11 +24,16 @@ main {
     border-radius: 2%;
     background-color: var(--color-primary2);
     overflow-y: scroll;
-    overflow-x:hidden;
+    overflow-x: hidden;
 
 
 
-    background: rgba(255, 255, 255, 0.807);box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );backdrop-filter: blur( 4px );-webkit-backdrop-filter: blur( 4px );border-radius: 10px;border: 1px solid rgba( 255, 255, 255, 0.18 );
+    background: rgba(255, 255, 255, 0.807);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 h2 {
@@ -38,12 +45,14 @@ h2 {
     justify-content: center;
     position: sticky;
 }
-.card{
+
+.card {
     margin: 0.5em;
     width: 95%;
-    
+
 }
-.card-header-text{
+
+.card-header-text {
     font-size: 20px;
     font-weight: bold;
     margin: 0.5em 0 -1.5em 0.4em;
@@ -51,43 +60,51 @@ h2 {
     justify-content: space-between;
     padding: 0.5em 1.65em 0 0.5em;
 }
-.card-footer{
+
+.card-footer {
     margin-top: -1em;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
 }
-.card-footer > p {
+
+.card-footer>p {
     font-size: 12px;
 }
+
 :host ::ng-deep .p-chip.custom-chip {
     position: sticky;
     margin-left: 5em;
     background-color: rgba(85, 85, 85, 0);
-    
+
 }
-:host ::ng-deep .p-button .custom-button{
+
+:host ::ng-deep .p-button .custom-button {
     background-color: var(--color-primary2);
 }
-.priority-1{
+
+.priority-1 {
     background-color: rgb(130, 231, 130);
     border-radius: 50%;
     height: 20px;
     width: 20px;
 }
-.priority-2{
+
+.priority-2 {
     background-color: rgb(251, 236, 123);
     border-radius: 50%;
     height: 20px;
     width: 20px;
 }
-.priority-3{
+
+.priority-3 {
     background-color: rgb(237, 87, 87);
     border-radius: 50%;
     height: 20px;
     width: 20px;
 }
+
 ::-webkit-scrollbar {
     width: 0px;
 }
@@ -104,7 +121,31 @@ h2 {
     background: #555;
 }
 
-.p-button-rounded{
+.p-button-rounded {
     background-color: var(--color-primary3);
-   border:  0px;
+    border: 0px;
+}
+
+
+.list-header {
+    width: 100%;
+    display: flex;
+}
+
+.header-button {
+    border: 0px;
+    margin-top: 3px;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
+.header-title {
+    margin-top: 0em;
+    margin-bottom: 0;
+    width: 100%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: inherit;
+    font-weight: inherit;
 }

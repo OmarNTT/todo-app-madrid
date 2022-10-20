@@ -1,11 +1,11 @@
 <header>
-  <div class="taskNumber" *ngIf="taskNumber =='0'; then trueBlock else falseBlock"> </div>
+  <div class="taskNumber" *ngIf="taskService.taskNumber == '0'; then trueBlock else falseBlock"> </div>
   <ng-template #trueBlock>
     <button icon="pi pi-check" label="All Done!" (dblclick)="test()" pButton type="button" class="grueso"></button>
   </ng-template>
   <ng-template #falseBlock>
     <button pButton type="button" label="Remaining" class="p-button-warning grueso ">
-      <i class="pi pi-exclamation-triangle" pBadge [value]="taskNumber" severity="success"
+      <i class="pi pi-exclamation-triangle" pBadge [value]="taskService.taskNumber" severity="success"
         style="margin-right: 1em; width: 15%"></i>
     </button>
   </ng-template>

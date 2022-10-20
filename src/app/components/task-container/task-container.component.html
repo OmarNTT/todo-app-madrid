@@ -1,7 +1,13 @@
 <main [ngClass]="{'translucent' : popUp == true}">
-    <div #cont1 (drop)="drop($event,cont1, 'notstarted')" (dragover)="allowDrop($event)" class="task-container">
-        <h2> To-Do Tasks </h2>
-        <p-card draggable="true" (dragstart)="drag($event)" class="card" *ngFor="let todo of todoTask" [id]="todo.id">
+    <div (drop)="drop($event, 'notstarted')" (dragover)="allowDrop($event)" class="task-container">
+        <div class="list-header">
+            <h2><button class="header-title" (click)="allTasksByStatus('notstarted')"> To-Do Task </button></h2>
+            <button class="priority-1 header-button" (click)="filterByPrio('notstarted',1)"></button>
+            <button class="priority-2 header-button" (click)="filterByPrio('notstarted',2)"></button>
+            <button class="priority-3 header-button" (click)="filterByPrio('notstarted',3)"></button>
+        </div>
+        <p-card draggable="true" (dragstart)="drag($event)" class="card" *ngFor="let todo of tasksByStatus.notstarted"
+            [id]="todo.id">
             <ng-template pTemplate="header">
                 <div class="card-header">
                     <p class="card-header-text">{{todo.title}}
@@ -11,7 +17,6 @@
                           : todo.priority == 2
                           ? 'priority-2 mr-2'
                           : 'priority-3 mr-2'" styleClass="mr-2 custom-chip">
-                            {{todo.priority}}
                         </p-chip>
                     </p>
                 </div>
@@ -29,9 +34,15 @@
         </p-card>
     </div>
 
-    <div #cont2 (drop)="drop($event,cont2, 'started')" (dragover)="allowDrop($event)" class="task-container">
-        <h2> Started Tasks</h2>
-        <p-card draggable="true" (dragstart)="drag($event)" class="card" *ngFor="let todo of startedTask"
+    <div #cont2 (drop)="drop($event, 'started')" (dragover)="allowDrop($event)" class="task-container">
+        <div class="list-header">
+            <h2><button class="header-title" (click)="allTasksByStatus('started')"> Started Tasks </button></h2>
+            <button class="priority-1 header-button" (click)="filterByPrio('started',1)"></button>
+            <button class="priority-2 header-button" (click)="filterByPrio('started',2)"></button>
+            <button class="priority-3 header-button" (click)="filterByPrio('started',3)"></button>
+        </div>
+
+        <p-card draggable="true" (dragstart)="drag($event)" class="card" *ngFor="let todo of tasksByStatus.started"
             [id]="todo.id">
             <ng-template pTemplate="header">
                 <div class="card-header">
@@ -59,9 +70,14 @@
         </p-card>
     </div>
 
-    <div #cont3 (drop)="drop($event,cont3, 'finished')" (dragover)="allowDrop($event)" class="task-container">
-        <h2> Finished Tasks</h2>
-        <p-card draggable="true" (dragstart)="drag($event)" class="card" *ngFor="let todo of finishedTask"
+    <div #cont3 (drop)="drop($event, 'finished')" (dragover)="allowDrop($event)" class="task-container">
+        <div class="list-header">
+            <h2><button class="header-title" (click)="allTasksByStatus('finished')"> Finished Tasks </button></h2>
+            <button class="priority-1 header-button" (click)="filterByPrio('finished',1)"></button>
+            <button class="priority-2 header-button" (click)="filterByPrio('finished',2)"></button>
+            <button class="priority-3 header-button" (click)="filterByPrio('finished',3)"></button>
+        </div>
+        <p-card draggable="true" (dragstart)="drag($event)" class="card" *ngFor="let todo of tasksByStatus.finished"
             [id]="todo.id">
             <ng-template pTemplate="header">
                 <div class="card-header">
@@ -92,5 +108,5 @@
 
 </main>
 <p-dialog header="Update your Task" [(visible)]="popUp" styleClass="pop-up">
-    <app-task-form [add]="false" [id2]="selectedTask.id" [title2]="selectedTask.title" [desc2]="selectedTask.description" [status2]="selected" [prio2]="priority" ></app-task-form>
+    <app-task-form [add]="false" [taskForm]="selectedTaskForm"></app-task-form>
 </p-dialog>

@@ -9,7 +9,8 @@ import { catchError, Observable, of, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class TaskService {
-  protected basePath = 'https://novatodoapi.azurewebsites.net/task';
+  protected basePath = 'https://nova-list.azurewebsites.net/task';
+  taskNumber: string = '0';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -29,7 +30,7 @@ export class TaskService {
   /** POST: add a new task to the server */
   addTask(task: Task) {
     console.log(task);
-    return this.http.post(this.basePath, task).subscribe((data: any)=>{console.log(data)});
+    return this.http.post(this.basePath, task);
   }
 
   /** PUT: update the task on the server */
@@ -43,7 +44,7 @@ export class TaskService {
     console.log('soy el service: '+ id)
     const url = `${this.basePath}/${id}`;
     console.log(url);
-    return this.http.delete(url);
+    return this.http.delete(url,{responseType: 'text'});
   }
 
 
